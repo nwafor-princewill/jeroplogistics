@@ -71,37 +71,34 @@
 
     // Simple form validation
     document.getElementById('contactForm').addEventListener('submit', function(e) {
-    e.preventDefault();
+        const name = document.getElementById('name');
+        const email = document.getElementById('email');
+        const message = document.getElementById('message');
     
-    const name = document.getElementById('name');
-    const email = document.getElementById('email');
-    const message = document.getElementById('message');
+        let isValid = true;
     
-    // Validate inputs
-    let isValid = true;
+        if (name.value.trim() === '') {
+            isValid = false;
+            name.classList.remove('input-success');
+        } else {
+            name.classList.add('input-success');
+        }
     
-    if (name.value.trim() === '') {
-        isValid = false;
-        name.classList.remove('input-success');
-    } else {
-        name.classList.add('input-success');
+        if (email.value.trim() === '' || !validateEmail(email.value)) {
+            isValid = false;
+            email.classList.remove('input-success');
+        } else {
+            email.classList.add('input-success');
+        }
+    
+        if (!isValid) {
+            e.preventDefault();  // ❗ Only prevent submit if invalid
+            alert('Please fill out the form correctly.');
+        }
+    });
+    
+    function validateEmail(email) {
+        const re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+        return re.test(String(email).toLowerCase());
     }
     
-    if (email.value.trim() === '' || !validateEmail(email.value)) {
-        isValid = false;
-        email.classList.remove('input-success');
-    } else {
-        email.classList.add('input-success');
-    }
-    
-    if (isValid) {
-        // Form is valid, you can submit it to a server here
-        alert('Thank you! Your message has been sent successfully.');
-        this.reset();
-    }
-});
-
-function validateEmail(email) {
-    const re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-    return re.test(String(email).toLowerCase());
-}
